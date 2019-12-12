@@ -1,0 +1,159 @@
+<!doctype html>
+<meta charset="utf-8">
+<script src="../template.js"></script>
+
+<dt-article>
+<h1>Political Leaning and Media Bias of Select Subreddits</h1>
+<p>
+<i>Conrad Tyler, <a href='https://pitzer.edu'>Pitzer College</a></i>
+</p>
+<p>
+<strong>tl;dr</strong>
+I used various numerical techniques, Natural Language Processing (NLP) tools, and machine-learning algorithms to analyze the posts on six political subreddits over the past 12 years.
+I conclude that there is no evidence for increasing political polarization from these subreddits, and that reddit is a generally left-leaning website. 
+</p>
+
+<dt-byline></dt-byline>
+
+<h3>Purpose</h3>
+<p>
+The political climate in the United States has shifted dramatically in the 21st century.
+Members on both sides of the political spectrum claim that U.S. politics are becoming increasingly polarized.
+In the era of fake news media bias, it is more important now than ever to examine the actual data.
+Reddit has existed since 2005 and is home to many major online political communities, some with millions of posts, so the goal of this project
+is to write a Python program to automatically analyze aspects of the following six major political subreddits:
+<a href=https://www.reddit.com/r/politics/>r/politics</a>,
+<a href=https://www.reddit.com/r/worldpolitics/ >r/worldpolitics</a>,
+<a href=https://www.reddit.com/r/democrats/ >r/democrats</a>,
+<a href=https://www.reddit.com/r/republican/ >r/republican</a>,
+<a href=https://www.reddit.com/r/liberal/ >r/liberal</a>,
+and
+<a href=https://www.reddit.com/r/conservative/ >r/conservative</a>.
+</p>
+
+<h3>The Data</h3>
+
+<p>
+<a href='https://files.pushshift.io/reddit/'>All Reddit data</a> is readily accessible online thanks to pushshift.io.
+I wrote a Python script to pull all titles and posts of the six political subreddits from the beginning of Reddit in 2005 to August of 2019. 
+The following plot shows the total number of posts each month for the subreddits of interest, going back to the creation of the first of these subreddits, r/politics, in August of 2007. 
+
+</dt-fn>
+</p>
+<img class=l-body src=img/NumberPosts.png >
+<p>
+This plot shows how r/politics was the first of these subreddits and it remains dominant in post contributions after the creation of the other five subreddits.
+The large spikes on the graph typically correspond to the October of election years (2008, 2012, 2016), as politically active redditors increasingly post leading up to the November elections.
+The relative contribution of the smaller subreddits dramatically increases in these pre-election times. 
+r/conservative contributions begin to climb after Obama begins his second presidential term in January of 2012. 
+A big spike in March of 2016 corresponds to the Iowa caucuses. 
+After Donald Trump is elected in November of 2016, r/conservative and r/worldpolitics experience dramatic increases in numbers of posts. 
+
+
+<h3>Title Sentiment Analysis</h3>
+<p>
+As one way of examining how the political climate has shifted, I wanted to determine whether post titles for each of the six political subreddits have become more positive or negative over time.
+I used <a href='https://textblob.readthedocs.io/en/dev/'>TextBlob</a> to analyze the sentiment of the titles for the six political subreddits. TextBlob is a Python library commonly used for text analysis. 
+TextBlob has a function to get the sentiment, or polarity, of a word by attributing a numerical value, from -1 to 1, to the word, with -1 meaning a negative word, 0 meaning a neutral word, and 1 meaning a positive word.
+Using this sentiment function on a whole title just takes the average sentiment of all the words in the title. The results of this analysis are below.
+</p>
+<img class=l-body src=img/Polarity.png >
+<p>
+The polarity of all subreddits reaches extremes close to the founding of the subreddits, presumably because there are fewer titles, and the posters of those titles are some of the first members of the community,
+and may have strong opinions. 
+All of the subreddits settle down to a relatively consistent, very slightly positive sentiment. 
+r/worldpolitics generally tends to have the most neutral titles.
+Overall, this graph demonstrates that that the political subreddits analyzed have not been trending towards positive or negative title sentiment.
+</p>
+<p>
+The average polarity of post titles remaining relatively consistent in the last nine or so years does not necessarily imply members of these subreddits are not becoming more polarized.
+Instead, political subreddits could be moving to more extremes on both sides, with more heavily positive and negative posts, which would not be reflected in an average.
+To test if this was the case, I calculated the standard deviation of the title polarity for each month and plotted it below.
+</p>
+<img class=l-body src=img/PolaritySD.png >
+<p>
+The standard deviations of sentiment settle down to between around 0.2 and 0.3, or about 10% to 15% of the sentiment range.
+Again, we see that while dramatic changes in polarity occur as the different subreddits formed, they eventually all settle down to a similar value.
+r/worldpolitics also has the lowest standard deviation of polarity, which makes sense as most of their posts are more consistently neutral in sentiment.
+r/republican experienced a decrease in polarity standard deviation on and after the election of Trump, suggesting republicans were aligning more with sentiment of title posts.
+We can see that there is no obvious, significant trend for the standard deviation of title sentiment.
+Combined with the previous graph, this suggests that these political subreddits are not becoming more polarized over time, at least in terms of the sentiment of their post titles.
+</p>
+
+<h3>Title Subjectivity Analysis</h3>
+<p>
+To further search for any shift in political discourse, I determined the subjectivity of the titles for the political subreddits over time.
+I once again used Python’s TextBlob sentiment function, as part of the output is a subjectivity score. 
+The subjectivity score is a value from 0 to 1, with 0 meaning an objective statement, and 1 meaning a subjective statement. The results of running this on all of the subreddit titles is below. 
+</p>
+<img class=l-body src=img/Subjectivity.png >
+<p>
+The subjectivity changes dramatically for the conservative subreddit. While initially this may be due to r/conservative's small size, the subreddit also has looser rules on what its 
+members can post compared to the other subreddits, perhaps allowing for greater fluctuations and trends in post titles.
+Again, we see no general trend for any subreddit of changing subjectivity over time. 
+</p>
+
+<h3> Media Bias </h3>
+<p>
+From general media sentiment of late it's tempting to conclude that people on either end of the political spectrum are becoming more extreme in their views.
+To see if this was the case for the political subreddits, I gathered all media websites linked in posts, 
+and used <a href='https://www.allsides.com/media-bias/media-bias-ratings'>AllSides</a> media bias ratings (1) to calculate an average political leaning for these links for each subreddit. 
+I used the following numerical scale for the analysis: -2 for strongly left, -1 for left, 0  for neutral, 1 for right, 2 for strongly right.
+</p>
+<img class=l-body src=img/Domains.png >
+<p>
+What stands out most on this graph is how much more left-leaning the media links from r/politics posts are compared to the other subreddits. 
+r/politics is often criticized for claiming to accept all political values while actually being a hub for liberal views, and this graph supports such notion.
+Leading up to the November election, all sources shifted more conservative, perhaps due to a plethora of Fox News (a +1 source) articles on Trump and other candidates that were linked by all subreddits. 
+A general trend can be seen of most subreddits linking more left-leaning media over time. The lack of any subreddit being consistently right-leaning in its linked sources may speak to the liberal dominance of reddit.
+</p>
+<h3>Unsupervised Word Analysis</h3>
+
+<p>
+Lastly, I was interested in seeing the specific words that are most strongly associated with the different subreddits I am examining. 
+</p>
+<p>
+To do this, I trained an unsupervised machine learning model to determine which title words were most important for predicting which subreddit the words came from. 
+I used a linear regression machine learning algorithm of the <a href='https://textblob.readthedocs.io/en/dev/'>scikit learn</a> library, using
+l2 regularization and penalty [1]. The results are below.
+</p>
+
+<img class=l-body src=img/Words.png>
+<p>
+The y-axis of this figure shows the 6 subreddits in the analysis, and the x-axis shows the 20 most significant words. 
+A blue box corresponds to a word that is strongly associated with a subreddit, while a red box corresponds to minimal or small association.
+</p>
+<p>
+r/republican has many unique words, mainly refering to prominent Republican leaders, as well as 'plumber', presumably for Joe the Plumber, often referred to as a 'prop' in the McCain presidential campaign. 
+r/democrats and r/worldpolitics have a few overlapping words, mainly for left-leaning political terms and news sources. 
+r/politics and r/liberal share many words, again supporting the notion that r/politics is a left-leaning subreddit.
+</p>
+<h3>Conclusion</h3>
+
+<p>
+I hypothesized that political polarization would be increasing over time, especially since the 2016 presidential election.
+However, all the subreddits analyzed do not seem to be following a trend of increasing polarity or subjectivity.
+While this analysis only examined a few communities on one website, it may speak to the importance of analyzing data before buying into media claims. 
+</p>
+
+</dt-article>
+
+<h4>Appendix</h4>
+<p>
+<strong>[1]</strong> The unsupervised word analysis involves multiple steps. First, I created 1, 2, and 3-grams from the titles, and stored these values into a matrix with their counts. 
+The corresponding class from each n-gram was the subreddit from which it came. 
+I then trained a model on the data, essentially finding the coefficients that minimize our loss function for predicting which words come from which subreddit.
+ A critical step to training is including a regularization penalty to avoid overfitting. I used the L2 regularization penalty, as I was not computationally limited 
+and did not have reason to create sparse coefficient vectors. The final dimensions of the coefficient matrix were 6x288280. I plotted the columns with the top 20 L2 norms. 
+The L2 norm is the distance of a vector in the coefficient matrix from the origin of the matrix. Thus, in this case, the L2 norm is an indication of how important a given 
+word was for predicting the subreddit from which it came, as greater coefficients imply greater predictive importance. I then used scikit learn’s 
+<a href='https://scikit-learn.org/stable/modules/generated/sklearn.cluster.SpectralCoclustering.html?highlight=spectral%20coclustering#sklearn.cluster.SpectralCoclustering'>spectral coclustering</a> function 
+to present the top 20 vectors in a more visually understandable way. 
+</p>
+
+<h4>References</h4>
+<strong>(1)</strong>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img style="margin-top: 5px; margin-bottom: 5px;" alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />
+<p><a xmlns:dct="http://purl.org/dc/terms/" href="https://www.allsides.com/media-bias/media-bias-ratings" rel="dct:source"><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Dataset" property="dct:title" rel="dct:type">AllSides Media Bias Ratings</span></a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.allsides.com/unbiased-balanced-news" property="cc:attributionName" rel="cc:attributionURL">AllSides.com</a> are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>. You may use this data for research or noncommercial purposes provided you include this attribution.</p>
+
+</script>
